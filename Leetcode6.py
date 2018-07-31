@@ -1,44 +1,49 @@
-class Solution():
-    def longestPalidrome(self, s):
-        # Dynamic Programming
-        length = len(s)
-        maxl = 0
-        start = 0
-        for i in range(length):
-            if i - maxl >= 1 and s[i-maxl-1: i+1] == s[i-maxl-1: i+1][::-1]:
-                start = i - maxl - 1
-                maxl += 2
-                continue
-            if i - maxl >= 0 and s[i-maxl: i+1] == s[i-maxl: i+1][::-1]:
-                start = i - maxl
-                maxl += 1
-        return s[start: start + maxl]
+'''The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+P   A   H   N
+A P L S I I G
+Y   I   R
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows:
+string convert(string s, int numRows);
+'''
+string convert(string s, int numRows);
+class Solution:
+    def convert(self, s, numRows):
+        lst = [ ['0' for i in range(len(s) // 2 + 1)] for j in range(numRows) ]
+        offset = numRows - 1
+        istr = 0
+        j = 0
+        k = 0
+        ss = ''
+        if numRows == 1 or len(s) == 1:
+            ss = s
+        else:
+            while(istr < len(s)-1):
+                for i in range(numRows):
+                    if istr < len(s):
+                        lst[i][k] = s[istr]
+                        istr += 1
+                k += 1
+                for j in range(k, k+offset):
+                    i -= 1
+                    if istr < len(s):
+                        lst[i][j] = s[istr]
+                        istr += 1
+                istr -= 1
+                k += offset-1
+        for i in range(numRows):
+            for j in range(len(s) // 2 + 1):
+                if lst[i][j] != '0':
+                    ss += lst[i][j]
 
-        # Expand Around Center
-        def expandAroundCenter(s, left, right):
-            L, R = left, right
-            while L >= 0 and R < length and s[L] == s[R]:
-               L -= 1
-               R += 1
-            return R-L-1
+        return ss
 
-        start, end = 0, 0
-        length = len(s)
-        for i in range(length):
-            len1 = expandAroundCenter(s, i, i)
-            len2 = expandAroundCenter(s, i, i+1)
-            maxlen = max(len1, len2)
-            if maxlen > end - start:
-                start = i - (maxlen - 1) / 2
-                end = i + maxlen / 2
-        return s[start: end+1]
-
-        #Manacher's Algorithm
-        
-
+def main():
+	s = 'ABC'
+	numRows = 2
+	sol = Solution()
+	ss = sol.convert(s, numRows)
+	print(ss)
 
 if __name__ == '__main__':
-    s = 'abbasdaffa'
-    solu = Solution()
-    print(solu.longestPalidrome(s))
-                    
+	main()
