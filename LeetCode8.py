@@ -69,7 +69,7 @@ import re
 
 def myAtoi(str):
     str = str.strip()
-    str = re.findall('(^[\+\-0]*\d+)', str)
+    str = re.findall(r'(^[\+\-0]*\d+)', str)
     try:
         result = int(''.join(str))
         # print(result)
